@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIALECTA</title>
+  <link rel="icon" type="image/svg+xml" href="/static/assets/favicon.svg" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/static/css/base.css" />
+  <link rel="stylesheet" href="/static/css/welcome.css" />
+  <link rel="stylesheet" href="/static/css/auth.css" />
+  <link rel="stylesheet" href="/static/css/app.css" />
+  <link rel="stylesheet" href="/static/css/report.css" />
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+  <!-- ══ SCREEN 1: WELCOME ══ -->
+  <div id="screen-welcome" class="screen active">
+    <canvas id="canvas-welcome"></canvas>
+    <div class="welcome-overlay">
+      <div class="welcome-logo">
+        <h1 class="logo-text">DIALECTA</h1>
+        <p class="logo-tagline">Multi-Agent AI Debate System</p>
+      </div>
+      <div class="welcome-buttons">
+        <button class="btn-primary" id="btn-get-started">Get Started</button>
+        <button class="btn-secondary" id="btn-learn-more">Learn More</button>
+      </div>
+      <div class="welcome-footer">
+        13 AI agents · Real-time debate · Full report
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 2: AUTH ══ -->
+  <div id="screen-auth" class="screen">
+    <canvas id="canvas-auth"></canvas>
+    <div class="auth-overlay">
+      <div class="auth-panel" id="auth-panel">
+
+        <div class="auth-header">
+          <span class="auth-logo">DIALECTA</span>
+        </div>
+
+        <!-- Login Form -->
+        <div id="form-login" class="auth-form active">
+          <h2 class="auth-title">Welcome back</h2>
+          <div class="auth-field">
+            <label>Email</label>
+            <input type="email" id="login-email" placeholder="you@example.com" />
+          </div>
+          <div class="auth-field">
+            <label>Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" />
+          </div>
+          <button class="btn-primary full" id="btn-login">Sign In</button>
+          <p class="auth-switch">
+            No account? <a href="#" id="link-to-signup">Sign up</a>
+          </p>
+          <div class="auth-error" id="login-error"></div>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="form-signup" class="auth-form">
+          <h2 class="auth-title">Create account</h2>
+          <div class="auth-field">
+            <label>Display Name</label>
+            <input type="text" id="signup-name" placeholder="Your name" />
+          </div>
+          <div class="auth-field">
+            <label>Email</label>
+            <input type="email" id="signup-email" placeholder="you@example.com" />
+          </div>
+          <div class="auth-field">
+            <label>Password</label>
+            <input type="password" id="signup-password" placeholder="Min 8 chars, 1 letter, 1 digit" />
+          </div>
+          <button class="btn-primary full" id="btn-signup">Create Account</button>
+          <p class="auth-switch">
+            Have an account? <a href="#" id="link-to-login">Sign in</a>
+          </p>
+          <div class="auth-error" id="signup-error"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 3: APP ══ -->
+  <div id="screen-app" class="screen">
+    <canvas id="canvas-debate"></canvas>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-logo">DIALECTA</span>
+        <button class="btn-icon" id="btn-logout" title="Logout">⏻</button>
+      </div>
+
+      <div class="sidebar-section">
+        <label class="sidebar-label">Debate Topic</label>
+        <textarea id="topic-input" placeholder="Enter a topic to debate..." rows="3"></textarea>
+      </div>
+
+      <div class="sidebar-section">
+        <label class="sidebar-label">Audience Persona</label>
+        <select id="persona-select">
+          <option value="General">General Public</option>
+          <option value="Policymaker">Policymaker</option>
+          <option value="Student">Student</option>
+          <option value="Journalist">Journalist</option>
+          <option value="Scientist">Scientist</option>
+        </select>
+      </div>
+
+      <button class="btn-primary full" id="btn-start-debate">Start Debate</button>
+
+      <div class="sidebar-section" id="history-section">
+        <label class="sidebar-label">Past Debates</label>
+        <div id="history-list"></div>
+      </div>
+    </div>
+
+    <!-- Activity Log -->
+    <div class="activity-log" id="activity-log">
+      <div class="log-header">Activity Log</div>
+      <div class="log-entries" id="log-entries"></div>
+    </div>
+
+    <!-- Score Bar -->
+    <div class="score-bar" id="score-bar">
+      <div class="score-label">Debater A</div>
+      <div class="score-track">
+        <div class="score-fill-a" id="score-fill-a"></div>
+        <div class="score-fill-b" id="score-fill-b"></div>
+      </div>
+      <div class="score-label">Debater B</div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+      <span class="progress-text" id="progress-text"></span>
+    </div>
+
+    <!-- Report Panel (shown after debate completes) -->
+    <div class="report-panel hidden" id="report-panel">
+      <h3 class="report-panel-title">Debate Complete</h3>
+      <div id="report-summary"></div>
+      <div class="report-downloads">
+        <button class="btn-download" id="btn-dl-pdf">⬇ PDF</button>
+        <button class="btn-download" id="btn-dl-json">⬇ JSON</button>
+        <button class="btn-download" id="btn-dl-md">⬇ Markdown</button>
+      </div>
+      <button class="btn-secondary full" id="btn-view-report">View Full Report</button>
+      <button class="btn-ghost full" id="btn-new-debate">New Debate</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 4: FULL REPORT ══ -->
+  <div id="screen-report" class="screen">
+    <div class="report-overlay">
+      <button class="btn-close-report" id="btn-close-report">✕</button>
+      <div class="report-content" id="report-content"></div>
+    </div>
+  </div>
+
+  <!-- ══ SCRIPTS ══ -->
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/debate_client.js"></script>
+  <script src="/static/js/scene_welcome.js"></script>
+  <script src="/static/js/scene_debate.js"></script>
+  <script src="/static/js/ui_auth.js"></script>
+  <script src="/static/js/ui_app.js"></script>
+  <script src="/static/js/ui_report.js"></script>
+  <script src="/static/js/app.js"></script>
+
+</body>
+</html>

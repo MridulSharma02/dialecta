@@ -1,0 +1,109 @@
+/* ══ WELCOME SCREEN ══ */
+
+#screen-welcome {
+  background: var(--color-bg-deep);
+}
+
+/* ══ OVERLAY ══ */
+.welcome-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ══ LOGO ══ */
+.welcome-logo {
+  text-align: center;
+  margin-bottom: 56px;
+  pointer-events: none;
+}
+
+.logo-text {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 900;
+  letter-spacing: clamp(12px, 2vw, 24px);
+  color: #ffffff;
+  text-transform: uppercase;
+  line-height: 1;
+
+  /* Glow effect */
+  text-shadow:
+    0 0 40px rgba(108, 99, 255, 0.8),
+    0 0 80px rgba(108, 99, 255, 0.4),
+    0 0 120px rgba(108, 99, 255, 0.2);
+
+  /* Subtle animation */
+  animation: logo-pulse 4s ease-in-out infinite;
+}
+
+@keyframes logo-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 40px rgba(108, 99, 255, 0.8),
+      0 0 80px rgba(108, 99, 255, 0.4),
+      0 0 120px rgba(108, 99, 255, 0.2);
+  }
+  50% {
+    text-shadow:
+      0 0 60px rgba(108, 99, 255, 1),
+      0 0 100px rgba(108, 99, 255, 0.6),
+      0 0 160px rgba(108, 99, 255, 0.3);
+  }
+}
+
+.logo-tagline {
+  font-size: clamp(11px, 1.5vw, 14px);
+  letter-spacing: clamp(4px, 1vw, 8px);
+  color: var(--color-text-mid);
+  text-transform: uppercase;
+  margin-top: 12px;
+  font-weight: 400;
+}
+
+/* ══ BUTTONS ══ */
+.welcome-buttons {
+  display: flex;
+  gap: 16px;
+  pointer-events: all;
+  margin-bottom: 48px;
+}
+
+.welcome-buttons .btn-primary {
+  padding: 14px 48px;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.welcome-buttons .btn-secondary {
+  padding: 14px 48px;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+/* ══ FOOTER ══ */
+.welcome-footer {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  pointer-events: none;
+  animation: fade-in-up 1.5s ease forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
