@@ -220,14 +220,28 @@ class UpdatePasswordRequest(BaseModel):
 
 
 @router.post("/update-password")
-async def update_password(request: Request, body: UpdatePasswordRequest, current_user: dict = Depends(get_current_user)):
+async def update_password(request: Request, body: UpdatePasswordRequest):
     password = validate_password(body.password)
-    user_id = current_user["sub"]
+
+    # Extract Supabase token from Authorization header
+    auth_header = request.headers.get("Authorization", "")
+    if not auth_header.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing token")
+    
+    supabase_token = auth_header.split(" ", 1)[1]
 
     try:
+        # Verify token with Supabase and get user
+        user_response = supabase_admin.auth.get_user(supabase_token)
+        if not user_response or not user_response.user:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        
+        user_id = str(user_response.user.id)
         supabase_admin.auth.admin.update_user_by_id(user_id, {"password": password})
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.warning("Password update failed for %s: %s", user_id, e)
+        logger.warning("Password update failed: %s", e)
         raise HTTPException(status_code=400, detail="Failed to update password")
 
     logger.info("Password updated for user: %s", user_id)
