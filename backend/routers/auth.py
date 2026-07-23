@@ -212,3 +212,23 @@ async def resend_verification(request: Request, body: SignupRequest):
         pass
     # Always return same message — never reveal if email exists
     return JSONResponse(content=ok(message="If this email is registered, a verification link has been sent"))
+
+# ── Update Password ───────────────────────────────────────────────────────────
+
+class UpdatePasswordRequest(BaseModel):
+    password: str
+
+
+@router.post("/update-password")
+async def update_password(request: Request, body: UpdatePasswordRequest, current_user: dict = Depends(get_current_user)):
+    password = validate_password(body.password)
+    user_id = current_user["sub"]
+
+    try:
+        supabase_admin.auth.admin.update_user_by_id(user_id, {"password": password})
+    except Exception as e:
+        logger.warning("Password update failed for %s: %s", user_id, e)
+        raise HTTPException(status_code=400, detail="Failed to update password")
+
+    logger.info("Password updated for user: %s", user_id)
+    return JSONResponse(content=ok(message="Password updated successfully"))

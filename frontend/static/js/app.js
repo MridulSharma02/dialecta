@@ -27,6 +27,15 @@ const App = (() => {
 
   // ── Boot sequence ──────────────────────────────────────────
   function boot() {
+    // 1. Check for password reset token in URL
+    const hash = window.location.hash;
+    if (hash.includes('access_token') && hash.includes('type=recovery')) {
+      navigateTo('auth');
+      UIAuth.init();
+      UIAuth.showResetForm();
+      return;
+    }
+
     // 1. Start welcome scene immediately
     WelcomeScene.init();
     LearnMore.init();

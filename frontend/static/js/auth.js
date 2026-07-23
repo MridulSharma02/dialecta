@@ -4,7 +4,7 @@ const Auth = (() => {
   // Access token lives only in JS memory — never localStorage
   let _accessToken = null;
 
-  const BACKEND = 'http://127.0.0.1:8000';
+  const BACKEND = 'https://dialecta-backend.onrender.com';
 
   // ── Store token in memory ──────────────────────────────────
   function setAccessToken(token) {
@@ -117,6 +117,27 @@ const Auth = (() => {
     return BACKEND;
   }
 
+  // ── Update password (after reset email link) ───────────────
+  async function updatePassword(newPassword) {
+    const hash = window.location.hash;
+    const params = new URLSearchParams(hash.replace('#', '?'));
+    const accessToken = params.get('access_token');
+
+    if (!accessToken) throw new Error('No reset token found. Please request a new password reset.');
+
+    const res = await fetch(`${BACKEND}/auth/update-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ password: newPassword }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'Failed to update password');
+    return data;
+  }
+
   return {
     setAccessToken,
     getAccessToken,
@@ -126,5 +147,6 @@ const Auth = (() => {
     signup,
     logout,
     getBackendUrl,
+    updatePassword,
   };
 })();

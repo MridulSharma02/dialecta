@@ -105,5 +105,47 @@ const UIAuth = (() => {
     document.getElementById('signup-error').textContent = '';
   }
 
-  return { init };
+  function showResetForm() {
+    const formLogin  = document.getElementById('form-login');
+    const formSignup = document.getElementById('form-signup');
+    const formReset  = document.getElementById('form-reset');
+
+    formLogin.classList.remove('active');
+    formSignup.classList.remove('active');
+    formReset.classList.add('active');
+
+    const btnReset  = document.getElementById('btn-reset');
+    const resetError = document.getElementById('reset-error');
+
+    btnReset.addEventListener('click', async () => {
+      const password = document.getElementById('reset-password').value;
+
+      if (!password) {
+        resetError.textContent = 'Please enter a new password.';
+        return;
+      }
+
+      btnReset.disabled = true;
+      btnReset.textContent = 'Please wait...';
+      resetError.textContent = '';
+
+      try {
+        await Auth.updatePassword(password);
+        resetError.style.color = 'var(--color-green)';
+        resetError.textContent = 'Password updated! You can now log in.';
+        setTimeout(() => {
+          formReset.classList.remove('active');
+          formLogin.classList.add('active');
+        }, 2000);
+      } catch (err) {
+        resetError.style.color = 'var(--color-accent-b)';
+        resetError.textContent = err.message || 'Failed to update password.';
+      } finally {
+        btnReset.disabled = false;
+        btnReset.textContent = 'Update Password';
+      }
+    });
+  }
+
+  return { init, showResetForm };
 })();
