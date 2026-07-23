@@ -52,7 +52,6 @@ app = FastAPI(
 
 app.state.limiter = limiter
 
-app.add_middleware(RequestLoggingMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
@@ -60,6 +59,7 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type", "X-Request-ID"],
 )
+app.add_middleware(RequestLoggingMiddleware)
 
 app.add_exception_handler(DialectaError, dialecta_exception_handler)
 app.add_exception_handler(StarletteHTTPException, http_exception_handler)
