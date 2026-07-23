@@ -169,6 +169,95 @@
     </div>
   </div>
 
+  <!-- ══ LEARN MORE OVERLAY ══ -->
+  <div id="overlay-learn-more" class="lm-overlay">
+    <canvas id="lm-canvas"></canvas>
+
+    <button class="lm-close" id="lm-close-btn" aria-label="Close">✕</button>
+
+    <div class="lm-stage" id="lm-stage">
+
+      <div class="lm-scene" data-scene="0">
+        <div class="lm-eyebrow">W H A T &nbsp; I S</div>
+        <div class="lm-hero-word">DIALECTA</div>
+        <div class="lm-sub">A debate — run entirely by machines.</div>
+      </div>
+
+      <div class="lm-scene" data-scene="1">
+        <div class="lm-question">What if AI could argue both sides<br>of any question — and judge itself?</div>
+      </div>
+
+      <div class="lm-scene" data-scene="2">
+        <div class="lm-label">T H E &nbsp; S Y S T E M</div>
+        <div class="lm-pillars">
+          <div class="lm-pillar" style="--d:0ms">
+            <div class="lm-pillar-icon">⚔</div>
+            <div class="lm-pillar-title">Two Debaters</div>
+            <div class="lm-pillar-desc">One argues for. One argues against. Neither knows mercy.</div>
+          </div>
+          <div class="lm-pillar" style="--d:150ms">
+            <div class="lm-pillar-icon">⚖</div>
+            <div class="lm-pillar-title">Impartial Judge</div>
+            <div class="lm-pillar-desc">Scores every argument on logic, evidence, clarity and originality.</div>
+          </div>
+          <div class="lm-pillar" style="--d:300ms">
+            <div class="lm-pillar-icon">🔍</div>
+            <div class="lm-pillar-title">Fact Checker</div>
+            <div class="lm-pillar-desc">Validates every claim in real time. No bluffing allowed.</div>
+          </div>
+          <div class="lm-pillar" style="--d:450ms">
+            <div class="lm-pillar-icon">🧠</div>
+            <div class="lm-pillar-title">Memory Agent</div>
+            <div class="lm-pillar-desc">Tracks every argument made. Penalises repetition instantly.</div>
+          </div>
+          <div class="lm-pillar" style="--d:600ms">
+            <div class="lm-pillar-icon">👿</div>
+            <div class="lm-pillar-title">Devil's Advocate</div>
+            <div class="lm-pillar-desc">When one side falls behind, it whispers stronger angles.</div>
+          </div>
+          <div class="lm-pillar" style="--d:750ms">
+            <div class="lm-pillar-icon">📊</div>
+            <div class="lm-pillar-title">Full Report</div>
+            <div class="lm-pillar-desc">Every debate ends with a downloadable PDF, JSON and Markdown report.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lm-scene" data-scene="3">
+        <div class="lm-label">H O W &nbsp; I T &nbsp; W O R K S</div>
+        <div class="lm-flow">
+          <div class="lm-flow-step" style="--d:0ms"><span class="lm-num">01</span><span>You enter any topic</span></div>
+          <div class="lm-flow-arrow" style="--d:80ms">↓</div>
+          <div class="lm-flow-step" style="--d:160ms"><span class="lm-num">02</span><span>AI breaks it into sub-debates</span></div>
+          <div class="lm-flow-arrow" style="--d:240ms">↓</div>
+          <div class="lm-flow-step" style="--d:320ms"><span class="lm-num">03</span><span>13 agents debate in real time</span></div>
+          <div class="lm-flow-arrow" style="--d:400ms">↓</div>
+          <div class="lm-flow-step" style="--d:480ms"><span class="lm-num">04</span><span>A winner is declared</span></div>
+          <div class="lm-flow-arrow" style="--d:560ms">↓</div>
+          <div class="lm-flow-step" style="--d:640ms"><span class="lm-num">05</span><span>Full report generated</span></div>
+        </div>
+      </div>
+
+      <div class="lm-scene" data-scene="4">
+        <div class="lm-final-line">13 agents. Every angle. Zero bias.</div>
+        <div class="lm-final-sub">The most rigorous AI debate system ever built.</div>
+        <button class="lm-cta" id="lm-cta-btn">Start a Debate →</button>
+      </div>
+
+    </div>
+
+    <div class="lm-dots" id="lm-dots">
+      <button class="lm-dot active" data-dot="0"></button>
+      <button class="lm-dot" data-dot="1"></button>
+      <button class="lm-dot" data-dot="2"></button>
+      <button class="lm-dot" data-dot="3"></button>
+      <button class="lm-dot" data-dot="4"></button>
+    </div>
+
+    <button class="lm-nav lm-prev" id="lm-prev">‹</button>
+    <button class="lm-nav lm-next" id="lm-next">›</button>
+  </div>
+
   <!-- ══ SCRIPTS ══ -->
   <script src="/static/js/auth.js"></script>
   <script src="/static/js/debate_client.js"></script>
@@ -178,6 +267,7 @@
   <script src="/static/js/ui_app.js"></script>
   <script src="/static/js/ui_report.js"></script>
   <script src="/static/js/app.js"></script>
+  <script src="/static/js/learn_more.js"></script>
 
 </body>
 </html>

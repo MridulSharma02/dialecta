@@ -29,6 +29,7 @@ const App = (() => {
   function boot() {
     // 1. Start welcome scene immediately
     WelcomeScene.init();
+    LearnMore.init();
 
     // 2. Check if user already has a valid token
     const token = Auth.getAccessToken();
@@ -49,9 +50,7 @@ const App = (() => {
     });
 
     document.getElementById('btn-learn-more').addEventListener('click', () => {
-      // Scroll to show tagline info — for now just go to auth
-      navigateTo('auth');
-      UIAuth.init();
+      LearnMore.open();
     });
 
     // 4. Listen for auth success event (fired by UIAuth after login)
