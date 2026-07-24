@@ -30,6 +30,7 @@ const App = (() => {
     // 1. Check for password reset token in URL
     const hash = window.location.hash;
     if (hash.includes('access_token') && hash.includes('type=recovery')) {
+      history.replaceState(null, '', window.location.pathname);
       navigateTo('auth');
       UIAuth.init();
       UIAuth.showResetForm();
