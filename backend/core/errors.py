@@ -96,11 +96,20 @@ def err(code: str, message: str) -> dict:
     return {"success": False, "error": {"code": code, "message": message}}
 
 
+CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "https://dialecta-tau.vercel.app",
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Authorization, Content-Type, X-Request-ID",
+}
+
+
 async def dialecta_exception_handler(request: Request, exc: DialectaError) -> JSONResponse:
     logger.warning("DialectaError %s: %s", exc.code, exc.message)
     return JSONResponse(
         status_code=exc.status_code,
         content=err(exc.code, exc.message),
+        headers=CORS_HEADERS,
     )
 
 
@@ -110,6 +119,7 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
     return JSONResponse(
         status_code=exc.status_code,
         content=err(f"HTTP_{exc.status_code}", safe_message),
+        headers=CORS_HEADERS,
     )
 
 
@@ -118,6 +128,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     return JSONResponse(
         status_code=422,
         content=err(ErrorCode.VALIDATION_ERROR, "Invalid request data"),
+        headers=CORS_HEADERS,
     )
 
 
@@ -126,4 +137,5 @@ async def generic_exception_handler(request: Request, exc: Exception) -> JSONRes
     return JSONResponse(
         status_code=500,
         content=err(ErrorCode.INTERNAL_ERROR, "An unexpected error occurred"),
+        headers=CORS_HEADERS,
     )
