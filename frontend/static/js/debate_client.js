@@ -4,7 +4,7 @@ const DebateClient = (() => {
   let _ws = null;
   let _reconnectTimer = null;
 
-  const WS_URL = 'ws://127.0.0.1:8000/ws/debate';
+  const WS_URL = 'wss://dialecta-backend.onrender.com/ws/debate';
 
   // ── Start a debate ─────────────────────────────────────────
   function start(topic, persona) {
