@@ -12,7 +12,7 @@ genai.configure(api_key=settings.GEMINI_API_KEY)
 
 
 class GroqClient:
-    MODEL = "llama-3.1-70b-versatile"
+    MODEL = "llama-3.3-70b-versatile"
 
     async def complete(self, system: str, user: str, temperature: float = 0.8) -> str:
         response = await _groq_client.chat.completions.create(
@@ -28,7 +28,7 @@ class GroqClient:
 
 
 class GeminiClient:
-    MODEL = "gemini-1.5-flash"
+    MODEL = "gemini-2.0-flash"
 
     async def complete(self, system: str, user: str, temperature: float = 0.5) -> str:
         model = genai.GenerativeModel(
