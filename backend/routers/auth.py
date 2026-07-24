@@ -218,6 +218,17 @@ async def resend_verification(request: Request, body: SignupRequest):
 class UpdatePasswordRequest(BaseModel):
     password: str
 
+@router.options("/update-password")
+async def update_password_preflight():
+    return Response(
+        status_code=200,
+        headers={
+            "Access-Control-Allow-Origin": "https://dialecta-tau.vercel.app",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Authorization, Content-Type, X-Request-ID",
+            "Access-Control-Allow-Credentials": "true",
+        },
+    )
 
 @router.post("/update-password")
 async def update_password(request: Request, body: UpdatePasswordRequest):
