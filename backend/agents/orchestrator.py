@@ -198,11 +198,16 @@ class Orchestrator:
                 rubric = round_data["new_rubric"]
 
             # Save checkpoint after every round
-            await save_checkpoint(debate_id, {
-                "sub_index": sub_index,
-                "round_num": round_num,
-                "score_history": score_history,
-            })
+            await save_checkpoint(
+                debate_id=debate_id,
+                sub_debate_id=sub.get("id", str(sub_index)),
+                round_number=round_num,
+                state={
+                    "sub_index": sub_index,
+                    "round_num": round_num,
+                    "score_history": score_history,
+                },
+            )
 
             # Skip exit checks until minimum rounds done
             if round_num < MIN_ROUNDS:
