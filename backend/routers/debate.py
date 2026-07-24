@@ -20,7 +20,7 @@ async def debate_websocket(websocket: WebSocket):
     if not user:
         return  # authenticate_websocket already closed the connection
 
-    user_id = user["id"]
+    user_id = user["sub"]
     debate_id = str(uuid.uuid4())
 
     try:

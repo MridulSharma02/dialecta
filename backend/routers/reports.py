@@ -48,7 +48,7 @@ async def get_report_history(
     Returns a paginated list of the user's completed debates
     that have reports available.
     """
-    user_id = current_user["user_id"]
+    user_id = current_user["sub"]
     offset = (page - 1) * limit
 
     rows = (
@@ -80,7 +80,7 @@ async def download_report(
     Assembles and streams the report in the requested format.
     Supports: pdf, json, markdown
     """
-    user_id = current_user["user_id"]
+    user_id = current_user["sub"]
 
     # Verify ownership + completion
     await _get_debate_or_404(debate_id, user_id)
@@ -133,7 +133,7 @@ async def preview_report(
     (summary + sub-debate winners) for the UI report panel.
     No full transcript included.
     """
-    user_id = current_user["user_id"]
+    user_id = current_user["sub"]
 
     await _get_debate_or_404(debate_id, user_id)
     report = await assemble_report(debate_id, user_id)
