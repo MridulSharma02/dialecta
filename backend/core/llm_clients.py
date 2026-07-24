@@ -55,8 +55,13 @@ class FallbackLLMClient:
         prefer_gemini: bool = False,
     ) -> tuple[str, bool]:
         if prefer_gemini:
-            text = await self.gemini.complete(system, user, temperature)
-            return text, False
+            try:
+                text = await self.gemini.complete(system, user, temperature)
+                return text, False
+            except Exception as e:
+                logger.warning(f"[FallbackLLM] Gemini failed ({e}), falling back to Groq.")
+                text = await self.groq.complete(system, user, temperature)
+                return text, True
 
         try:
             text = await self.groq.complete(system, user, temperature)
