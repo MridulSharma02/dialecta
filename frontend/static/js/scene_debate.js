@@ -9,7 +9,7 @@ const SceneDebate = (() => {
   let mouseX = 0, mouseY = 0;
 
   // ── Spherical camera state (drag + scroll) ─────────────────
-  let sph = { theta: 0.3, phi: 1.1, r: 420 };
+  let sph = { theta: 0.3, phi: 1.05, r: 520 };
   let drag = false, prev = { x: 0, y: 0 };
 
   // ── Agent definitions (13 agents, 3D Y offsets for depth) ──
