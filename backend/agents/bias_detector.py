@@ -23,7 +23,7 @@ def _load_classifier():
         from transformers import pipeline
         classifier = pipeline(
             "zero-shot-classification",
-            model="facebook/bart-large-mnli",
+            model="cross-encoder/nli-MiniLM2-L6-H768",
             device=-1,  # CPU only
         )
         logger.info("[BiasDetector] Model loaded successfully.")
