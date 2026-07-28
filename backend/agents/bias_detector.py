@@ -19,6 +19,10 @@ FLAG_THRESHOLD = 0.6
 
 def _load_classifier():
     """Load the HuggingFace classifier lazily so startup is fast."""
+    import os
+    if os.getenv("ENVIRONMENT") == "production":
+        logger.warning("[BiasDetector] Skipping model load in production (memory constraint).")
+        return None
     try:
         from transformers import pipeline
         classifier = pipeline(
