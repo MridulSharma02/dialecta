@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import uuid
 from datetime import datetime, timezone
@@ -291,6 +292,7 @@ class Orchestrator:
 
         # 1. Fact Checker
         await self.emit("agent_thinking", {"agent": "FactChecker"})
+        await asyncio.sleep(2)
         fact_result = await self.fact_checker.run_with_retry(context)
         context.fact_context = (fact_result.data or {}).get("fact_context", "")
 
@@ -299,6 +301,7 @@ class Orchestrator:
 
         # 3. Debater A
         await self.emit("agent_thinking", {"agent": "DebaterA"})
+        await asyncio.sleep(2)
         result_a = await self.debater_a.run_with_retry(context)
         context.argument_a = (result_a.data or {}).get("argument", "")
         await self.emit("argument_made", {
@@ -309,6 +312,7 @@ class Orchestrator:
         # 4. Retrieve memory for B then Debater B
         context.memory_context = await self.memory_agent.retrieve_history(debate_id, "B")
         await self.emit("agent_thinking", {"agent": "DebaterB"})
+        await asyncio.sleep(2)
         result_b = await self.debater_b.run_with_retry(context)
         context.argument_b = (result_b.data or {}).get("argument", "")
         await self.emit("argument_made", {
@@ -318,6 +322,7 @@ class Orchestrator:
 
         # 5. Bias Detector
         await self.emit("agent_thinking", {"agent": "BiasDetector"})
+        await asyncio.sleep(2)
         bias_result = await self.bias_detector.run_with_retry(context)
         bias_data = bias_result.data or {}
         context.bias_flags = bias_data.get("flags_a", []) + bias_data.get("flags_b", [])
@@ -326,6 +331,7 @@ class Orchestrator:
 
         # 6. Judge
         await self.emit("agent_thinking", {"agent": "Judge"})
+        await asyncio.sleep(2)
         judge_result = await self.judge.run_with_retry(context)
         judge_data = judge_result.data or {}
         await self.emit("round_scored", {
@@ -340,6 +346,7 @@ class Orchestrator:
         new_rubric = None
         if round_num % CRITIC_INTERVAL == 0:
             await self.emit("agent_thinking", {"agent": "Critic"})
+            await asyncio.sleep(2)
             critic_result = await self.critic.run_with_retry(context)
             if critic_result.status == AgentStatus.OK and critic_result.data:
                 new_rubric = critic_result.data.get("updated_rubric")
@@ -349,6 +356,7 @@ class Orchestrator:
         gap = abs(judge_data.get("total_a", 5) - judge_data.get("total_b", 5))
         if gap >= DEVILS_ADVOCATE_GAP and len(score_history) >= DEVILS_ADVOCATE_CONSECUTIVE - 1:
             await self.emit("agent_thinking", {"agent": "DevilsAdvocate"})
+            await asyncio.sleep(2)
             da_context = AgentContext(
                 debate_id=debate_id, user_id=user_id, topic=topic,
                 sub_topic=sub_topic, round_number=round_num,
@@ -366,18 +374,21 @@ class Orchestrator:
 
         # 9. Memory Agent — store + novelty check
         await self.emit("agent_thinking", {"agent": "MemoryAgent"})
+        await asyncio.sleep(2)
         memory_result = await self.memory_agent.run(context)
         memory_data = memory_result.data or {}
         is_repetitive = memory_data.get("is_repetitive", False)
 
         # 10. Summariser
         await self.emit("agent_thinking", {"agent": "Summariser"})
+        await asyncio.sleep(2)
         summary_result = await self.summariser.run_with_retry(context)
         summary = (summary_result.data or {}).get("summary", "")
         await self.emit("round_summary", {"round": round_num, "summary": summary})
 
         # 11. Audience Agent
         await self.emit("agent_thinking", {"agent": "AudienceAgent"})
+        await asyncio.sleep(2)
         audience_result = await self.audience_agent.run_with_retry(context)
         audience_data = audience_result.data or {}
         await self.emit("audience_reacted", {
