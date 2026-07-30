@@ -110,6 +110,10 @@ class Orchestrator:
             all_sub_results.append(sub_result)
             overall_score_a += sub_result.get("final_score_a", 0)
             overall_score_b += sub_result.get("final_score_b", 0)
+            # Pause between sub-debates to avoid Groq rate limiting
+            if sub_index < len(sub_topics) - 1:
+                await self.emit("agent_thinking", {"agent": "RateLimitCooldown"})
+                await asyncio.sleep(30)
 
         # --- Phase 3: Meta evaluation ---
         await self.emit("agent_thinking", {"agent": "MetaEvaluator"})
