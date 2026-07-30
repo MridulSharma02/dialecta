@@ -104,8 +104,8 @@ const UIApp = (() => {
         break;
 
       case 'round_scored':
-        _scoreA = data.scores?.debater_a?.total ?? _scoreA;
-        _scoreB = data.scores?.debater_b?.total ?? _scoreB;
+        _scoreA = data.scores?.debater_a?.total ?? data.total_a ?? _scoreA;
+        _scoreB = data.scores?.debater_b?.total ?? data.total_b ?? _scoreB;
         _updateScoreBar(_scoreA, _scoreB);
         _log(`Round scored — A: ${_scoreA.toFixed(1)} | B: ${_scoreB.toFixed(1)}`, 'agent-judge');
         break;

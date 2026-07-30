@@ -149,6 +149,7 @@ class Orchestrator:
             "overall_score_a": round(overall_score_a / len(sub_topics), 2),
             "overall_score_b": round(overall_score_b / len(sub_topics), 2),
             "quality_score": quality_score,
+            "total_rounds": sum(s.get("rounds_run", 0) for s in all_sub_results),
             "meta_evaluation": meta_data.get("evaluation", ""),
             "sub_debates": all_sub_results,
         }
@@ -278,7 +279,7 @@ class Orchestrator:
         self, debate_id, user_id, topic, sub_topic, round_num,
         stance_a, stance_b, score_history, rubric, audience_persona
     ) -> dict:
-        await self.emit("round_started", {"round": round_num, "sub_topic": sub_topic})
+        await self.emit("round_started", {"round_number": round_num, "sub_topic": sub_topic})
 
         context = AgentContext(
             debate_id=debate_id, user_id=user_id, topic=topic,
