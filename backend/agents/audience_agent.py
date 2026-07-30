@@ -1,6 +1,6 @@
 import logging
 from agents.base import BaseAgent, AgentContext, AgentResult, AgentStatus
-from core.llm_clients import GeminiClient
+from core.llm_clients import FallbackLLMClient
 
 logger = logging.getLogger(__name__)
 
@@ -10,7 +10,7 @@ SYSTEM_PROMPT = """You are reacting to a debate round from the perspective of: {
 class AudienceAgent(BaseAgent):
     def __init__(self):
         super().__init__(name="AudienceAgent")
-        self.client = GeminiClient()
+        self.client = FallbackLLMClient()
 
     async def run(self, context: AgentContext) -> AgentResult:
         persona = context.audience_persona or "a skeptical member of the general public"
@@ -24,7 +24,7 @@ Debater B argued: {context.argument_b}
 React now as {persona}."""
 
         try:
-            text = await self.client.complete(system, user_prompt, temperature=0.7)
+            text, _ = await self.client.complete(system, user_prompt, temperature=0.7, prefer_gemini=True)
             return AgentResult(
                 agent_name=self.name,
                 status=AgentStatus.OK,

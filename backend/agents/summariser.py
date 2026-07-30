@@ -1,6 +1,6 @@
 import logging
 from agents.base import BaseAgent, AgentContext, AgentResult, AgentStatus
-from core.llm_clients import GeminiClient
+from core.llm_clients import FallbackLLMClient
 
 logger = logging.getLogger(__name__)
 
@@ -10,7 +10,7 @@ SYSTEM_PROMPT = """You are a debate summariser. Write a concise 3-4 sentence dig
 class Summariser(BaseAgent):
     def __init__(self):
         super().__init__(name="Summariser")
-        self.client = GeminiClient()
+        self.client = FallbackLLMClient()
 
     async def run(self, context: AgentContext) -> AgentResult:
         user_prompt = f"""Sub-topic: {context.sub_topic} — Round {context.round_number}
@@ -24,7 +24,7 @@ Debater B ({context.stance_b}):
 Write a round digest now."""
 
         try:
-            text = await self.client.complete(SYSTEM_PROMPT, user_prompt, temperature=0.5)
+            text, _ = await self.client.complete(SYSTEM_PROMPT, user_prompt, temperature=0.5, prefer_gemini=True)
             return AgentResult(agent_name=self.name, status=AgentStatus.OK, data={"summary": text})
         except Exception as e:
             logger.error(f"[Summariser] Failed: {e}")

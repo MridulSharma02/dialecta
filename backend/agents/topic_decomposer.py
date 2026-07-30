@@ -1,7 +1,7 @@
 import json
 import logging
 from agents.base import BaseAgent, AgentContext, AgentResult, AgentStatus
-from core.llm_clients import GeminiClient
+from core.llm_clients import FallbackLLMClient
 
 logger = logging.getLogger(__name__)
 
@@ -13,12 +13,12 @@ Return only valid JSON with no extra text, no markdown, no code fences:
 class TopicDecomposer(BaseAgent):
     def __init__(self):
         super().__init__(name="TopicDecomposer")
-        self.client = GeminiClient()
+        self.client = FallbackLLMClient()
 
     async def run(self, context: AgentContext) -> AgentResult:
         try:
             user_prompt = f"Topic to decompose: {context.topic}"
-            raw = await self.client.complete(SYSTEM_PROMPT, user_prompt, temperature=0.5)
+            raw, _ = await self.client.complete(SYSTEM_PROMPT, user_prompt, temperature=0.5, prefer_gemini=True)
 
             # Strip any accidental markdown fences
             clean = raw.strip()

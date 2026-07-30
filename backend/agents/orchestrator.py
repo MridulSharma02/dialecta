@@ -200,7 +200,7 @@ class Orchestrator:
             # Save checkpoint after every round
             await save_checkpoint(
                 debate_id=debate_id,
-                sub_debate_id=sub.get("id", str(sub_index)),
+                sub_debate_id=str(uuid.uuid4()),
                 round_number=round_num,
                 state={
                     "sub_index": sub_index,

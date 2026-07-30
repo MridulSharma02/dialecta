@@ -1,6 +1,6 @@
 import logging
 from agents.base import BaseAgent, AgentContext, AgentResult, AgentStatus
-from core.llm_clients import GeminiClient
+from core.llm_clients import FallbackLLMClient
 
 logger = logging.getLogger(__name__)
 
@@ -10,7 +10,7 @@ SYSTEM_PROMPT = """You are a meta-evaluator assessing the overall quality of a c
 class MetaEvaluator(BaseAgent):
     def __init__(self):
         super().__init__(name="MetaEvaluator")
-        self.client = GeminiClient()
+        self.client = FallbackLLMClient()
 
     async def run(self, context: AgentContext) -> AgentResult:
         score_summary = "\n".join(
@@ -28,7 +28,7 @@ Score history:
 Provide your overall quality assessment now."""
 
         try:
-            text = await self.client.complete(SYSTEM_PROMPT, user_prompt, temperature=0.5)
+            text, _ = await self.client.complete(SYSTEM_PROMPT, user_prompt, temperature=0.5, prefer_gemini=True)
 
             # Extract numeric quality score from last sentence
             quality_score = 7.0  # default
