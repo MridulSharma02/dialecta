@@ -93,14 +93,16 @@ const UIApp = (() => {
         _updateProgress(data.sub_debate_number, data.total_sub_debates, data.round_number, data.max_rounds);
         break;
 
-      case 'agent_start':
-        _log(`${_formatAgent(data.agent)} is working...`, `agent-${_agentClass(data.agent)}`);
-        if (SceneDebate) SceneDebate.pulseAgent(data.agent);
+      case 'agent_thinking':
+        if (SceneDebate) SceneDebate.pulseAgent(_agentIdMap(data.agent));
         break;
 
-      case 'argument_generated':
-        _log(`${_formatAgent(data.speaker)}: ${data.content.slice(0, 80)}...`, `agent-${_agentClass(data.speaker)}`);
-        if (SceneDebate) SceneDebate.fireParticle(data.speaker, 'judge');
+      case 'argument_made':
+        _log(`Debater ${data.debater}: ${data.argument?.slice(0, 80)}...`, 'agent-orchestrator');
+        if (SceneDebate) {
+          if (data.debater === 'A') SceneDebate.fireParticle('fact_checker', 'debater_a');
+          if (data.debater === 'B') SceneDebate.fireParticle('debater_a', 'debater_b');
+        }
         break;
 
       case 'round_scored':
@@ -108,6 +110,7 @@ const UIApp = (() => {
         _scoreB = data.scores?.debater_b?.total ?? data.total_b ?? _scoreB;
         _updateScoreBar(_scoreA, _scoreB);
         _log(`Round scored — A: ${_scoreA.toFixed(1)} | B: ${_scoreB.toFixed(1)}`, 'agent-judge');
+        if (SceneDebate) SceneDebate.fireParticle('debater_b', 'judge');
         break;
 
       case 'bias_detected':
@@ -136,6 +139,17 @@ const UIApp = (() => {
 
       case 'audience_reacted':
         _log(`Audience (${data.persona}): ${data.reaction?.slice(0, 80)}...`, 'agent-audience');
+        if (SceneDebate) SceneDebate.fireParticle('summariser', 'audience_agent');
+        break;
+
+      case 'round_summary':
+        _log(`Summary: ${data.summary?.slice(0, 80)}...`, 'agent-summariser');
+        if (SceneDebate) SceneDebate.fireParticle('judge', 'summariser');
+        break;
+
+      case 'rubric_updated':
+        _log(`Critic rewrote rubric`, 'agent-critic');
+        if (SceneDebate) SceneDebate.fireParticle('judge', 'critic');
         break;
 
       case 'debate_complete':
@@ -293,6 +307,25 @@ const UIApp = (() => {
       audience_agent: 'audience', meta_evaluator: 'meta',
     };
     return map[name] || 'orchestrator';
+  }
+
+  function _agentIdMap(name) {
+    const map = {
+      'FactChecker': 'fact_checker',
+      'DebaterA': 'debater_a',
+      'DebaterB': 'debater_b',
+      'Judge': 'judge',
+      'BiasDetector': 'bias_detector',
+      'Critic': 'critic',
+      'MemoryAgent': 'memory_agent',
+      'Summariser': 'summariser',
+      'AudienceAgent': 'audience_agent',
+      'TopicDecomposer': 'topic_decomposer',
+      'MetaEvaluator': 'meta_evaluator',
+      'DevilsAdvocate': 'devils_advocate',
+      'Orchestrator': 'orchestrator',
+    };
+    return map[name] || name.toLowerCase();
   }
 
   return { init };
