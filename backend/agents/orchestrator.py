@@ -181,6 +181,21 @@ class Orchestrator:
             "stance_b": stance_b,
         })
 
+        # Insert sub-debate row into Supabase to get a real sub_debate_id
+        from db.supabase_client import supabase_admin
+        sub_debate_id = str(uuid.uuid4())
+        try:
+            supabase_admin.table("sub_debates").insert({
+                "sub_debate_id": sub_debate_id,
+                "debate_id": debate_id,
+                "sub_topic": sub_topic,
+                "stance_a": stance_a,
+                "stance_b": stance_b,
+                "rounds_run": 0,
+            }).execute()
+        except Exception as e:
+            logger.warning(f"[Orchestrator] Failed to insert sub_debate: {e}")
+
         score_history = []
         round_results = []
         rubric = None
@@ -206,7 +221,7 @@ class Orchestrator:
             # Save checkpoint after every round
             await save_checkpoint(
                 debate_id=debate_id,
-                sub_debate_id=str(uuid.uuid4()),
+                sub_debate_id=sub_debate_id,
                 round_number=round_num,
                 state={
                     "sub_index": sub_index,
@@ -214,6 +229,21 @@ class Orchestrator:
                     "score_history": score_history,
                 },
             )
+            # Save round to Supabase
+            try:
+                scores = round_data["scores"]
+                supabase_admin.table("rounds").insert({
+                    "sub_debate_id": sub_debate_id,
+                    "round_number": round_num,
+                    "argument_a": round_data.get("argument_a", ""),
+                    "argument_b": round_data.get("argument_b", ""),
+                    "score_a": scores.get("total_a"),
+                    "score_b": scores.get("total_b"),
+                    "audience_reaction": round_data.get("audience_reaction", ""),
+                    "judge_reasoning": scores.get("reasoning", {}),
+                }).execute()
+            except Exception as e:
+                logger.warning(f"[Orchestrator] Failed to save round: {e}")
 
             # Skip exit checks until minimum rounds done
             if round_num < MIN_ROUNDS:
@@ -264,6 +294,17 @@ class Orchestrator:
             "final_score_a": round(final_a, 2),
             "final_score_b": round(final_b, 2),
         })
+        
+        # Update sub_debate row with final results
+        try:
+            supabase_admin.table("sub_debates").update({
+                "rounds_run": len(round_results),
+                "winner": sub_winner,
+                "final_score_a": round(final_a, 2),
+                "final_score_b": round(final_b, 2),
+            }).eq("sub_debate_id", sub_debate_id).execute()
+        except Exception as e:
+            logger.warning(f"[Orchestrator] Failed to update sub_debate: {e}")
 
         return {
             "sub_topic": sub_topic,

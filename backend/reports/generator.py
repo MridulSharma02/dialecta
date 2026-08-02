@@ -7,12 +7,6 @@ from db.supabase_client import supabase_admin
 
 
 async def assemble_report(debate_id: str, user_id: str) -> dict[str, Any]:
-    """
-    Pull everything from Supabase for a completed debate and
-    return a single structured dict that all three format
-    generators (JSON / Markdown / PDF) consume.
-    """
-
     # ── 1. Debate header ────────────────────────────────────────
     debate_row = (
         supabase_admin
@@ -27,22 +21,20 @@ async def assemble_report(debate_id: str, user_id: str) -> dict[str, Any]:
         raise ValueError(f"Debate {debate_id} not found or access denied.")
     debate = debate_row.data
 
-    # ── 2. Sub-debates ──────────────────────────────────────────
+    # ── 2. Sub-debates (no created_at column) ──────────────────
     sub_rows = (
         supabase_admin
         .from_("sub_debates")
         .select("*")
         .eq("debate_id", debate_id)
-        .order("created_at")
         .execute()
     )
     sub_debates = sub_rows.data or []
 
-    # ── 3. Rounds + arguments for every sub-debate ──────────────
+    # ── 3. Rounds for every sub-debate ──────────────────────────
     enriched_subs = []
     for sub in sub_debates:
         sid = sub["sub_debate_id"]
-
         round_rows = (
             supabase_admin
             .from_("rounds")
@@ -51,38 +43,10 @@ async def assemble_report(debate_id: str, user_id: str) -> dict[str, Any]:
             .order("round_number")
             .execute()
         )
-        rounds = round_rows.data or []
-
-        enriched_rounds = []
-        for rnd in rounds:
-            rid = rnd["round_id"]
-
-            arg_rows = (
-                supabase_admin
-                .from_("arguments")
-                .select("*")
-                .eq("round_id", rid)
-                .order("created_at")
-                .execute()
-            )
-            rnd["arguments"] = arg_rows.data or []
-            enriched_rounds.append(rnd)
-
-        sub["rounds"] = enriched_rounds
+        sub["rounds"] = round_rows.data or []
         enriched_subs.append(sub)
 
-    # ── 4. Agent events (bias flags, fact checks, etc.) ─────────
-    event_rows = (
-        supabase_admin
-        .from_("agent_events")
-        .select("*")
-        .eq("debate_id", debate_id)
-        .order("created_at")
-        .execute()
-    )
-    agent_events = event_rows.data or []
-
-    # ── 5. Assemble final report dict ───────────────────────────
+    # ── 4. Assemble final report dict ───────────────────────────
     report = {
         "report_id": str(uuid.uuid4()),
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -97,7 +61,6 @@ async def assemble_report(debate_id: str, user_id: str) -> dict[str, Any]:
             "completed_at": debate.get("completed_at"),
         },
         "sub_debates": enriched_subs,
-        "agent_events": agent_events,
         "summary": _build_summary(debate, enriched_subs),
     }
 
@@ -105,8 +68,6 @@ async def assemble_report(debate_id: str, user_id: str) -> dict[str, Any]:
 
 
 def _build_summary(debate: dict, sub_debates: list[dict]) -> dict[str, Any]:
-    """Compute top-level summary statistics from assembled data."""
-
     total_rounds = sum(len(s.get("rounds", [])) for s in sub_debates)
     winners = [s.get("winner") for s in sub_debates if s.get("winner")]
     debater_a_wins = winners.count("debater_a")
