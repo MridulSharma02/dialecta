@@ -138,6 +138,11 @@ const Auth = (() => {
     return data;
   }
 
+  // ── OAuth (Google / GitHub) ────────────────────────────────
+  async function loginWithOAuth(provider) {
+    window.location.href = `${BACKEND}/auth/oauth/${provider}?redirect_to=${encodeURIComponent(window.location.origin)}`;
+  }
+
   return {
     setAccessToken,
     getAccessToken,
@@ -148,5 +153,6 @@ const Auth = (() => {
     logout,
     getBackendUrl,
     updatePassword,
+    loginWithOAuth,
   };
 })();

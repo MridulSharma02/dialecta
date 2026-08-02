@@ -257,3 +257,20 @@ async def update_password(request: Request, body: UpdatePasswordRequest):
 
     logger.info("Password updated for user: %s", user_id)
     return JSONResponse(content=ok(message="Password updated successfully"))
+
+@router.get("/oauth/{provider}")
+async def oauth_redirect(provider: str, redirect_to: str = ""):
+    if provider not in ("google", "github"):
+        raise HTTPException(status_code=400, detail="Unsupported provider")
+    try:
+        from fastapi.responses import RedirectResponse
+        result = supabase.auth.sign_in_with_oauth({
+            "provider": provider,
+            "options": {
+                "redirect_to": f"{settings.SUPABASE_URL}/auth/v1/callback?redirect_to={redirect_to or 'https://dialecta-tau.vercel.app'}",
+            }
+        })
+        return RedirectResponse(url=result.url)
+    except Exception as e:
+        logger.error("OAuth redirect failed: %s", e)
+        raise HTTPException(status_code=500, detail="OAuth failed")

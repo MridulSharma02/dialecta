@@ -27,7 +27,7 @@ const App = (() => {
 
   // ── Boot sequence ──────────────────────────────────────────
   function boot() {
-    // 1. Check for password reset token in URL
+    // 1. Check for OAuth callback or password reset token in URL
     const hash = window.location.hash;
     if (hash.includes('access_token') && hash.includes('type=recovery')) {
       history.replaceState(null, '', window.location.pathname);
@@ -35,6 +35,21 @@ const App = (() => {
       UIAuth.init();
       UIAuth.showResetForm();
       return;
+    }
+
+    // OAuth callback — token in URL hash from Supabase
+    if (hash.includes('access_token') && !hash.includes('type=recovery')) {
+      const params = new URLSearchParams(hash.replace('#', ''));
+      const accessToken = params.get('access_token');
+      if (accessToken) {
+        Auth.setAccessToken(accessToken);
+        history.replaceState(null, '', window.location.pathname);
+        WelcomeScene.init();
+        navigateTo('app');
+        SceneDebate.init();
+        UIApp.init();
+        return;
+      }
     }
 
     // 1. Start welcome scene immediately

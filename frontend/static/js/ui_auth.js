@@ -82,6 +82,12 @@ const UIAuth = (() => {
       }
     });
 
+    // ── OAuth buttons ─────────────────────────────────────────
+    document.getElementById('btn-google-login').addEventListener('click', () => Auth.loginWithOAuth('google'));
+    document.getElementById('btn-github-login').addEventListener('click', () => Auth.loginWithOAuth('github'));
+    document.getElementById('btn-google-signup').addEventListener('click', () => Auth.loginWithOAuth('google'));
+    document.getElementById('btn-github-signup').addEventListener('click', () => Auth.loginWithOAuth('github'));
+    
     // ── Enter key support ─────────────────────────────────────
     document.getElementById('login-password').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') btnLogin.click();
