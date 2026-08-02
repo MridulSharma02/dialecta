@@ -30,14 +30,14 @@
   }
   .cover h1 {
     font-size: 48px;
-    letter-spacing: 3px;
+    letter-spacing: 0px;
     font-weight: 900;
     color: #e0e0ff;
     margin-bottom: 8px;
   }
   .cover .tagline {
     font-size: 13px;
-    letter-spacing: 4px;
+    letter-spacing: 0px;
     color: #9090cc;
     margin-bottom: 48px;
     text-transform: uppercase;
@@ -52,7 +52,7 @@
   }
   .cover .topic-label {
     font-size: 10px;
-    letter-spacing: 3px;
+    letter-spacing: 0px;
     color: #8080bb;
     text-transform: uppercase;
     margin-bottom: 10px;
@@ -76,7 +76,7 @@
     padding: 12px 32px;
     font-size: 13px;
     color: #80ffb0;
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     text-transform: uppercase;
   }
 
@@ -95,7 +95,7 @@
     border-bottom: 3px solid #302b63;
     padding-bottom: 8px;
     margin-bottom: 20px;
-    letter-spacing: 1px;
+    letter-spacing: 0px;
     text-transform: uppercase;
   }
   .sub-title {
@@ -110,7 +110,7 @@
     color: #555580;
     margin: 14px 0 6px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0px;
   }
 
   /* ── Summary table ── */
@@ -203,7 +203,7 @@
     font-size: 9px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0px;
   }
   .badge.bias    { background: #ffe0e0; color: #aa0000; }
   .badge.fact    { background: #e0f0ff; color: #004488; }
@@ -219,7 +219,7 @@
     margin-top: 40px;
     padding-top: 12px;
     border-top: 1px solid #e0e0f0;
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     text-transform: uppercase;
   }
 </style>
@@ -237,7 +237,7 @@
   </div>
 
   <div class="meta">
-    <div>Generated: {{ generated_at[:10] | replace('-', ' / ') }}</div>
+    <div>Generated: {{ generated_at[:10] }}</div>
     <div>Status: Completed</div>
     <div>Quality Score: {{ debate.quality_score if debate.quality_score else 'N/A' }}</div>
   </div>
