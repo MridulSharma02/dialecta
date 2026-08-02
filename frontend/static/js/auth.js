@@ -140,7 +140,10 @@ const Auth = (() => {
 
   // ── OAuth (Google / GitHub) ────────────────────────────────
   async function loginWithOAuth(provider) {
-    window.location.href = `${BACKEND}/auth/oauth/${provider}?redirect_to=${encodeURIComponent(window.location.origin)}`;
+    const SUPABASE_URL = 'https://ylsraomyrfxrjjahczfr.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlsc3Jhb215cmZ4cmpqYWhjemZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0NzEyMzUsImV4cCI6MjA2OTA0NzIzNX0.HX394eTHWPbXBPc5hMiMxJ2uXVbxKJDrpnZzLr-ptRQ';
+    const redirectTo = `${window.location.origin}`;
+    window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=${provider}&redirect_to=${encodeURIComponent(redirectTo)}&apikey=${SUPABASE_ANON_KEY}`;
   }
 
   return {
