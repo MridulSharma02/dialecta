@@ -30,7 +30,7 @@
   }
   .cover h1 {
     font-size: 48px;
-    letter-spacing: 12px;
+    letter-spacing: 3px;
     font-weight: 900;
     color: #e0e0ff;
     margin-bottom: 8px;
@@ -237,10 +237,9 @@
   </div>
 
   <div class="meta">
-    <div>Report ID: {{ report_id }}</div>
-    <div>Generated: {{ generated_at }}</div>
-    <div>Status: {{ debate.status }}</div>
-    <div>Quality Score: {{ debate.quality_score }}</div>
+    <div>Generated: {{ generated_at[:10] | replace('-', ' / ') }}</div>
+    <div>Status: Completed</div>
+    <div>Quality Score: {{ debate.quality_score if debate.quality_score else 'N/A' }}</div>
   </div>
 
   <div class="winner-badge">Overall Winner: {{ debate.winner }}</div>

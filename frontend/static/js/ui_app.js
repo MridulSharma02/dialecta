@@ -261,7 +261,7 @@ const UIApp = (() => {
   // ── History ────────────────────────────────────────────────
   async function _loadHistory() {
     try {
-      const res = await Auth.fetchWithAuth('/reports/history');
+      const res = await Auth.fetchWithAuth('/reports/history?limit=5');
       if (!res.ok) return;
       const data = await res.json();
       const list = document.getElementById('history-list');
