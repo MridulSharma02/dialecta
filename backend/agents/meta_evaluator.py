@@ -32,13 +32,16 @@ Provide your overall quality assessment now."""
 
             # Extract numeric quality score from last sentence
             quality_score = 7.0  # default
-            for word in text.split():
-                try:
-                    val = float(word.strip(".,/10"))
-                    if 1.0 <= val <= 10.0:
-                        quality_score = val
-                except ValueError:
-                    continue
+            sentences = [s.strip() for s in text.replace('\n', ' ').split('.') if s.strip()]
+            for sentence in sentences[-2:]:
+                for word in sentence.split():
+                    try:
+                        val = float(word.strip(".,/10"))
+                        if 1.0 <= val <= 10.0:
+                            quality_score = val
+                            break
+                    except ValueError:
+                        continue
 
             return AgentResult(
                 agent_name=self.name,

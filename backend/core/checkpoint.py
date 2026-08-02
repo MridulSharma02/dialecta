@@ -19,7 +19,6 @@ async def save_checkpoint(
     try:
         supabase_admin.table("checkpoints").upsert({
             "debate_id": debate_id,
-            "sub_debate_id": sub_debate_id,
             "round_number": round_number,
             "state_json": state,
             "saved_at": datetime.now(timezone.utc).isoformat(),
