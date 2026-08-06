@@ -84,13 +84,13 @@ const UIApp = (() => {
         break;
 
       case 'sub_debate_started':
-        _log(`Sub-debate ${data.sub_debate_number}: ${data.sub_topic}`, 'agent-decomposer');
-        _updateProgress(data.sub_debate_number, data.total_sub_debates, 0, 0);
+        _log(`Sub-debate ${data.sub_index}: ${data.sub_topic}`, 'agent-decomposer');
+        _updateProgress(data.sub_index, data.total_subs, 0, 0);
         break;
 
       case 'round_started':
         _log(`Round ${data.round_number} started`, 'agent-orchestrator');
-        _updateProgress(data.sub_debate_number, data.total_sub_debates, data.round_number, data.max_rounds);
+        _updateProgress(data.sub_index, data.total_subs, data.round_number, data.max_rounds);
         break;
 
       case 'agent_thinking':
