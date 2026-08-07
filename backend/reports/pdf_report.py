@@ -8,12 +8,6 @@ _TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), "templates")
 
 
 def generate_pdf_report(report: dict[str, Any]) -> bytes:
-    """
-    Renders report.html via Jinja2 then converts to PDF with WeasyPrint.
-    WeasyPrint requires GTK on Windows — works natively on Linux/Render.
-    """
-
-    # Lazy import so Windows dev server doesn't crash if GTK is missing
     try:
         from weasyprint import HTML as WeasyprintHTML
     except Exception as e:
@@ -32,10 +26,14 @@ def generate_pdf_report(report: dict[str, Any]) -> bytes:
     rendered_html = template.render(
         report_id=report["report_id"],
         generated_at=report["generated_at"],
-        debate=report["debate"],
-        summary=report["summary"],
+        overview=report.get("overview", {}),
+        summary=report.get("summary", {}),
+        topic_decomposition=report.get("topic_decomposition", []),
         sub_debates=report.get("sub_debates", []),
-        agent_events=report.get("agent_events", []),
+        improvement_log=report.get("improvement_log", []),
+        meta_evaluation=report.get("meta_evaluation", {}),
+        final_verdict=report.get("final_verdict", {}),
+        transcript=report.get("transcript", []),
     )
 
     pdf_bytes = WeasyprintHTML(string=rendered_html).write_pdf()

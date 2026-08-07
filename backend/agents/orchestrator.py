@@ -145,6 +145,9 @@ class Orchestrator:
             debate_id=debate_id, user_id=user_id, topic=topic,
             winner=winner, quality_score=quality_score,
             total_rounds=sum(s.get("rounds_run", 0) for s in all_sub_results),
+            meta_evaluation=meta_data.get("evaluation", ""),
+            overall_score_a=round(overall_score_a / len(sub_topics), 2),
+            overall_score_b=round(overall_score_b / len(sub_topics), 2),
         )
 
         final_result = {
@@ -241,6 +244,13 @@ class Orchestrator:
                     "score_b": scores.get("total_b"),
                     "audience_reaction": round_data.get("audience_reaction", ""),
                     "judge_reasoning": scores.get("reasoning", {}),
+                    "summary": round_data.get("summary", ""),
+                    "bias_flags": round_data.get("bias_flags", []),
+                    "fact_context": round_data.get("fact_context", ""),
+                    "devils_advocate": round_data.get("devils_advocate"),
+                    "rubric_changes": round_data.get("rubric_changes"),
+                    "novelty_score": round_data.get("novelty_score", 1.0),
+                    "is_repetitive": round_data.get("is_repetitive", False),
                 }).execute()
             except Exception as e:
                 logger.warning(f"[Orchestrator] Failed to save round: {e}")
@@ -446,6 +456,7 @@ class Orchestrator:
             "argument_a": context.argument_a,
             "argument_b": context.argument_b,
             "bias_flags": context.bias_flags,
+            "fact_context": context.fact_context,
             "scores": {
                 "total_a": judge_data.get("total_a", 0),
                 "total_b": judge_data.get("total_b", 0),
@@ -455,6 +466,9 @@ class Orchestrator:
             },
             "summary": summary,
             "audience_reaction": audience_data.get("reaction", ""),
+            "audience_persona": audience_data.get("persona", ""),
+            "devils_advocate": da_data.get("advice") if 'da_data' in locals() else None,
+            "rubric_changes": critic_result.data.get("changes_made", []) if new_rubric else None,
             "novelty_score": memory_data.get("novelty_score", 1.0),
             "is_repetitive": is_repetitive,
             "new_rubric": new_rubric,
@@ -465,7 +479,8 @@ class Orchestrator:
     # ------------------------------------------------------------------
 
     async def _save_debate_record(
-        self, debate_id, user_id, topic, winner, quality_score, total_rounds
+        self, debate_id, user_id, topic, winner, quality_score, total_rounds,
+        meta_evaluation="", overall_score_a=0.0, overall_score_b=0.0
     ):
         try:
             supabase_service.table("debates").update({
@@ -474,6 +489,9 @@ class Orchestrator:
                 "winner": winner,
                 "quality_score": quality_score,
                 "total_rounds": total_rounds,
+                "meta_evaluation": meta_evaluation,
+                "overall_score_a": overall_score_a,
+                "overall_score_b": overall_score_b,
             }).eq("debate_id", debate_id).execute()
             logger.info(f"[Orchestrator] Debate {debate_id} saved to Supabase.")
         except Exception as e:

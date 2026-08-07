@@ -4,17 +4,15 @@
 <meta charset="UTF-8" />
 <title>DIALECTA Debate Report</title>
 <style>
-  /* ── Base ── */
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 12px;
     color: #1a1a2e;
     background: #ffffff;
-    padding: 0;
   }
 
-  /* ── Cover Page ── */
+  /* ── Cover ── */
   .cover {
     width: 100%;
     min-height: 100vh;
@@ -28,200 +26,151 @@
     padding: 60px 40px;
     page-break-after: always;
   }
-  .cover h1 {
-    font-size: 48px;
-    letter-spacing: 0px;
-    font-weight: 900;
-    color: #e0e0ff;
-    margin-bottom: 8px;
-  }
-  .cover .tagline {
-    font-size: 13px;
-    letter-spacing: 0px;
-    color: #9090cc;
-    margin-bottom: 48px;
-    text-transform: uppercase;
-  }
+  .cover h1 { font-size: 52px; font-weight: 900; color: #e0e0ff; margin-bottom: 6px; letter-spacing: 4px; }
+  .cover .tagline { font-size: 11px; color: #8080bb; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 48px; }
   .cover .topic-box {
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: 12px;
-    padding: 28px 40px;
-    max-width: 600px;
-    margin-bottom: 40px;
+    padding: 28px 48px;
+    max-width: 620px;
+    margin-bottom: 36px;
   }
-  .cover .topic-label {
-    font-size: 10px;
-    letter-spacing: 0px;
-    color: #8080bb;
-    text-transform: uppercase;
-    margin-bottom: 10px;
+  .cover .topic-label { font-size: 9px; letter-spacing: 3px; color: #7070aa; text-transform: uppercase; margin-bottom: 12px; }
+  .cover .topic-text { font-size: 20px; font-weight: 600; color: #e0e0ff; line-height: 1.5; }
+  .cover .meta { font-size: 11px; color: #6060aa; line-height: 2.2; }
+  .cover .scores-row { display: flex; gap: 24px; margin-top: 28px; justify-content: center; }
+  .cover .score-box {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 14px 28px;
+    text-align: center;
   }
-  .cover .topic-text {
-    font-size: 18px;
-    font-weight: 600;
-    color: #e0e0ff;
-    line-height: 1.5;
-  }
-  .cover .meta {
-    font-size: 11px;
-    color: #7070aa;
-    line-height: 2;
-  }
+  .cover .score-box .score-val { font-size: 22px; font-weight: 700; color: #c0c0ff; }
+  .cover .score-box .score-lbl { font-size: 9px; color: #7070aa; text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
   .cover .winner-badge {
     margin-top: 32px;
-    background: rgba(100, 200, 150, 0.15);
-    border: 1px solid rgba(100, 200, 150, 0.4);
+    background: rgba(100,200,150,0.15);
+    border: 1px solid rgba(100,200,150,0.4);
     border-radius: 8px;
-    padding: 12px 32px;
-    font-size: 13px;
+    padding: 12px 36px;
+    font-size: 12px;
     color: #80ffb0;
-    letter-spacing: 0px;
     text-transform: uppercase;
+    letter-spacing: 2px;
   }
 
-  /* ── Page layout ── */
-  .page {
-    padding: 40px 48px;
-    page-break-after: always;
-  }
+  /* ── Pages ── */
+  .page { padding: 44px 52px; page-break-after: always; }
   .page:last-child { page-break-after: avoid; }
 
   /* ── Section headings ── */
   .section-title {
-    font-size: 20px;
+    font-size: 9px;
     font-weight: 700;
-    color: #302b63;
-    border-bottom: 3px solid #302b63;
-    padding-bottom: 8px;
-    margin-bottom: 20px;
-    letter-spacing: 0px;
+    color: #8080bb;
     text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 6px;
   }
-  .sub-title {
-    font-size: 14px;
+  .section-heading {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1a1a2e;
+    border-bottom: 3px solid #302b63;
+    padding-bottom: 10px;
+    margin-bottom: 24px;
+  }
+  .sub-heading {
+    font-size: 15px;
     font-weight: 700;
     color: #24243e;
-    margin: 20px 0 8px;
-  }
-  .round-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #555580;
-    margin: 14px 0 6px;
-    text-transform: uppercase;
-    letter-spacing: 0px;
-  }
-
-  /* ── Summary table ── */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  th {
-    background: #302b63;
-    color: #ffffff;
-    padding: 8px 12px;
-    text-align: left;
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  td {
-    padding: 8px 12px;
-    border-bottom: 1px solid #e0e0f0;
-    font-size: 11px;
-    color: #333355;
-  }
-  tr:nth-child(even) td { background: #f5f5ff; }
-
-  /* ── Score pills ── */
-  .score-row {
-    display: flex;
-    gap: 16px;
-    margin: 6px 0 10px;
-  }
-  .score-pill {
-    background: #f0f0ff;
-    border: 1px solid #c0c0e0;
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 10px;
-    color: #302b63;
-    font-weight: 600;
-  }
-  .score-pill.winner {
-    background: #302b63;
-    color: #ffffff;
-    border-color: #302b63;
-  }
-
-  /* ── Argument blocks ── */
-  .argument {
-    margin: 8px 0;
-    padding: 10px 14px;
-    border-radius: 6px;
-    line-height: 1.6;
-    font-size: 11px;
-  }
-  .argument.debater-a {
-    background: #eef0ff;
+    margin: 28px 0 10px;
+    padding-left: 12px;
     border-left: 4px solid #302b63;
   }
-  .argument.debater-b {
-    background: #fff0ee;
-    border-left: 4px solid #b03030;
-  }
-  .argument .speaker-label {
-    font-size: 9px;
+  .round-heading {
+    font-size: 10px;
     font-weight: 700;
+    color: #6060aa;
+    text-transform: uppercase;
     letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    color: #555580;
+    margin: 20px 0 8px;
   }
 
-  /* ── Key insight ── */
-  .insight-box {
-    background: #fffbe6;
-    border: 1px solid #e8d870;
-    border-radius: 6px;
-    padding: 8px 14px;
-    font-size: 11px;
-    color: #554400;
-    margin: 8px 0;
-    font-style: italic;
-  }
+  /* ── Tables ── */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 11px; }
+  th { background: #1a1a2e; color: #ffffff; padding: 9px 14px; text-align: left; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+  td { padding: 9px 14px; border-bottom: 1px solid #e8e8f4; color: #2a2a4a; }
+  tr:nth-child(even) td { background: #f7f7ff; }
 
-  /* ── Agent events ── */
-  .event-row td { font-size: 10px; }
-  .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 9px;
+  /* ── Score pills ── */
+  .score-row { display: flex; gap: 12px; margin: 8px 0 12px; flex-wrap: wrap; }
+  .pill {
+    border-radius: 20px;
+    padding: 5px 16px;
+    font-size: 10px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0px;
+    border: 1px solid #c0c0e0;
+    background: #f0f0ff;
+    color: #302b63;
   }
-  .badge.bias    { background: #ffe0e0; color: #aa0000; }
-  .badge.fact    { background: #e0f0ff; color: #004488; }
-  .badge.memory  { background: #e8ffe0; color: #006600; }
-  .badge.critic  { background: #fff0e0; color: #884400; }
-  .badge.default { background: #f0f0f0; color: #444444; }
+  .pill.winner-a { background: #302b63; color: #fff; border-color: #302b63; }
+  .pill.winner-b { background: #8b0000; color: #fff; border-color: #8b0000; }
+  .pill.neutral { background: #f0f0f0; color: #555; border-color: #ccc; }
+
+  /* ── Argument blocks ── */
+  .argument { margin: 8px 0; padding: 12px 16px; border-radius: 6px; font-size: 11px; line-height: 1.7; }
+  .argument .speaker { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+  .argument.side-a { background: #eef0ff; border-left: 4px solid #302b63; }
+  .argument.side-a .speaker { color: #302b63; }
+  .argument.side-b { background: #fff0ee; border-left: 4px solid #8b0000; }
+  .argument.side-b .speaker { color: #8b0000; }
+
+  /* ── Info boxes ── */
+  .insight-box { background: #fffbe6; border: 1px solid #e8d870; border-radius: 6px; padding: 10px 14px; font-size: 11px; color: #554400; margin: 8px 0; font-style: italic; }
+  .fact-box { background: #e8f4ff; border: 1px solid #90c0e8; border-radius: 6px; padding: 10px 14px; font-size: 11px; color: #003366; margin: 8px 0; }
+  .bias-box { background: #fff0f0; border: 1px solid #e08080; border-radius: 6px; padding: 10px 14px; font-size: 11px; color: #800000; margin: 8px 0; }
+  .devil-box { background: #f8f0ff; border: 1px solid #c090e0; border-radius: 6px; padding: 10px 14px; font-size: 11px; color: #440066; margin: 8px 0; }
+  .summary-box { background: #f0fff4; border: 1px solid #80c080; border-radius: 6px; padding: 10px 14px; font-size: 11px; color: #004400; margin: 8px 0; }
+  .audience-box { background: #f5f5ff; border: 1px solid #a0a0e0; border-radius: 6px; padding: 10px 14px; font-size: 11px; color: #222266; margin: 8px 0; }
+  .repetitive-box { background: #fff8e0; border: 1px solid #d0b040; border-radius: 6px; padding: 8px 14px; font-size: 10px; color: #664400; margin: 6px 0; }
+  .meta-box { background: #f7f7ff; border: 1px solid #c0c0e8; border-radius: 8px; padding: 16px 20px; font-size: 12px; color: #1a1a3a; line-height: 1.8; margin: 12px 0; }
+
+  .box-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+
+  /* ── Improvement log ── */
+  .log-entry { margin: 8px 0; padding: 10px 14px; border-radius: 6px; font-size: 11px; }
+  .log-entry.rubric { background: #fff8e8; border-left: 3px solid #d0a000; }
+  .log-entry.devil { background: #f8f0ff; border-left: 3px solid #9040c0; }
+  .log-entry.repetition { background: #fff0e8; border-left: 3px solid #d06020; }
+  .log-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+
+  /* ── Verdict ── */
+  .verdict-winner {
+    text-align: center;
+    padding: 28px;
+    background: linear-gradient(135deg, #0f0c29, #302b63);
+    border-radius: 12px;
+    color: #e0e0ff;
+    margin-bottom: 24px;
+  }
+  .verdict-winner .vw-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #8080bb; margin-bottom: 8px; }
+  .verdict-winner .vw-name { font-size: 28px; font-weight: 800; }
+  .verdict-winner .vw-scores { font-size: 12px; color: #a0a0dd; margin-top: 8px; }
+
+  /* ── Transcript ── */
+  .transcript-arg { margin: 6px 0; padding: 10px 14px; border-radius: 4px; font-size: 11px; line-height: 1.6; }
+  .transcript-arg.t-a { background: #f5f5ff; border-left: 3px solid #302b63; }
+  .transcript-arg.t-b { background: #fff5f5; border-left: 3px solid #8b0000; }
+  .transcript-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; color: #666699; }
 
   /* ── Footer ── */
-  .footer {
-    text-align: center;
-    font-size: 9px;
-    color: #9090bb;
-    margin-top: 40px;
-    padding-top: 12px;
-    border-top: 1px solid #e0e0f0;
-    letter-spacing: 0px;
-    text-transform: uppercase;
-  }
+  .footer { text-align: center; font-size: 9px; color: #9090bb; margin-top: 40px; padding-top: 12px; border-top: 1px solid #e0e0f0; text-transform: uppercase; letter-spacing: 2px; }
+
+  /* ── Divider ── */
+  .divider { border: none; border-top: 1px solid #e0e0f0; margin: 20px 0; }
 </style>
 </head>
 <body>
@@ -233,71 +182,158 @@
 
   <div class="topic-box">
     <div class="topic-label">Debate Topic</div>
-    <div class="topic-text">{{ debate.topic }}</div>
+    <div class="topic-text">{{ overview.topic }}</div>
   </div>
 
   <div class="meta">
     <div>Generated: {{ generated_at[:10] }}</div>
-    <div>Status: Completed</div>
-    <div>Quality Score: {{ debate.quality_score if debate.quality_score else 'N/A' }}</div>
+    <div>Status: {{ overview.status | title }}</div>
+    <div>Sub-Debates: {{ overview.total_sub_debates }} &nbsp;·&nbsp; Total Rounds: {{ overview.total_rounds }}</div>
   </div>
 
-  <div class="winner-badge">Overall Winner: {{ debate.winner }}</div>
+  <div class="scores-row">
+    <div class="score-box">
+      <div class="score-val">{{ overview.overall_score_a or 'N/A' }}</div>
+      <div class="score-lbl">Debater A</div>
+    </div>
+    <div class="score-box">
+      <div class="score-val">{{ overview.overall_score_b or 'N/A' }}</div>
+      <div class="score-lbl">Debater B</div>
+    </div>
+    <div class="score-box">
+      <div class="score-val">{{ overview.quality_score or 'N/A' }}</div>
+      <div class="score-lbl">Quality</div>
+    </div>
+  </div>
+
+  <div class="winner-badge">Overall Winner: {{ overview.winner }}</div>
 </div>
 
-<!-- ══ SUMMARY PAGE ══ -->
+<!-- ══ SECTION 1: OVERVIEW ══ -->
 <div class="page">
-  <div class="section-title">Summary</div>
+  <div class="section-title">Section 1</div>
+  <div class="section-heading">Overview</div>
 
   <table>
     <tr><th>Metric</th><th>Value</th></tr>
-    <tr><td>Total Sub-Debates</td><td>{{ summary.total_sub_debates }}</td></tr>
-    <tr><td>Total Rounds</td><td>{{ summary.total_rounds }}</td></tr>
-    <tr><td>Debater A Wins</td><td>{{ summary.debater_a_wins }}</td></tr>
-    <tr><td>Debater B Wins</td><td>{{ summary.debater_b_wins }}</td></tr>
+    <tr><td>Topic</td><td>{{ overview.topic }}</td></tr>
+    <tr><td>Overall Winner</td><td>{{ overview.winner }}</td></tr>
+    <tr><td>Debater A Score</td><td>{{ overview.overall_score_a or 'N/A' }}</td></tr>
+    <tr><td>Debater B Score</td><td>{{ overview.overall_score_b or 'N/A' }}</td></tr>
+    <tr><td>Quality Score</td><td>{{ overview.quality_score or 'N/A' }}</td></tr>
+    <tr><td>Total Sub-Debates</td><td>{{ overview.total_sub_debates }}</td></tr>
+    <tr><td>Total Rounds</td><td>{{ overview.total_rounds }}</td></tr>
+    <tr><td>Sub-Debate Wins A</td><td>{{ summary.debater_a_wins }}</td></tr>
+    <tr><td>Sub-Debate Wins B</td><td>{{ summary.debater_b_wins }}</td></tr>
     <tr><td>Ties</td><td>{{ summary.ties }}</td></tr>
-    <tr><td>Overall Winner</td><td>{{ summary.overall_winner }}</td></tr>
-    <tr><td>Quality Score</td><td>{{ summary.quality_score }}</td></tr>
+    <tr><td>Started</td><td>{{ overview.created_at }}</td></tr>
+    <tr><td>Completed</td><td>{{ overview.completed_at }}</td></tr>
+  </table>
+
+  {% if overview.meta_evaluation %}
+  <div class="meta-box">
+    <div class="box-label">Conclusion</div>
+    {{ overview.meta_evaluation }}
+  </div>
+  {% endif %}
+
+  <div class="footer">DIALECTA — Multi-Agent AI Debate System</div>
+</div>
+
+<!-- ══ SECTION 2: TOPIC DECOMPOSITION ══ -->
+<div class="page">
+  <div class="section-title">Section 2</div>
+  <div class="section-heading">Topic Decomposition</div>
+
+  <table>
+    <tr><th>#</th><th>Sub-Topic</th><th>Stance A</th><th>Stance B</th><th>Rounds</th><th>Winner</th><th>Score A</th><th>Score B</th></tr>
+    {% for sub in topic_decomposition %}
+    <tr>
+      <td>{{ sub.index }}</td>
+      <td>{{ sub.sub_topic }}</td>
+      <td>{{ sub.stance_a }}</td>
+      <td>{{ sub.stance_b }}</td>
+      <td>{{ sub.rounds_run }}</td>
+      <td>{{ sub.winner }}</td>
+      <td>{{ sub.final_score_a }}</td>
+      <td>{{ sub.final_score_b }}</td>
+    </tr>
+    {% endfor %}
   </table>
 
   <div class="footer">DIALECTA — Multi-Agent AI Debate System</div>
 </div>
 
-<!-- ══ SUB-DEBATES ══ -->
+<!-- ══ SECTION 3: SUB-DEBATE BREAKDOWNS ══ -->
 {% for sub in sub_debates %}
 <div class="page">
-  <div class="section-title">Sub-Debate {{ loop.index }}: {{ sub.sub_topic }}</div>
+  <div class="section-title">Section 3 — Sub-Debate {{ sub.index }}</div>
+  <div class="section-heading">{{ sub.sub_topic }}</div>
 
   <table>
     <tr><th>Field</th><th>Value</th></tr>
     <tr><td>Stance A</td><td>{{ sub.stance_a }}</td></tr>
     <tr><td>Stance B</td><td>{{ sub.stance_b }}</td></tr>
     <tr><td>Winner</td><td>{{ sub.winner }}</td></tr>
+    <tr><td>Final Score A</td><td>{{ sub.final_score_a }}</td></tr>
+    <tr><td>Final Score B</td><td>{{ sub.final_score_b }}</td></tr>
     <tr><td>Rounds Run</td><td>{{ sub.rounds_run }}</td></tr>
   </table>
 
-  {% for rnd in sub.rounds %}
-  <div class="round-title">Round {{ rnd.round_number }}</div>
+  {% for r in sub.rounds %}
+  <div class="round-heading">Round {{ r.round_number }}</div>
 
   <div class="score-row">
-    <span class="score-pill {% if rnd.round_winner == 'debater_a' %}winner{% endif %}">
-      Debater A: {{ rnd.score_a }}
+    <span class="pill {% if r.winner == 'debater_a' %}winner-a{% elif r.winner == 'debater_b' %}winner-b{% else %}neutral{% endif %}">
+      A: {{ r.score_a }}
     </span>
-    <span class="score-pill {% if rnd.round_winner == 'debater_b' %}winner{% endif %}">
-      Debater B: {{ rnd.score_b }}
+    <span class="pill {% if r.winner == 'debater_b' %}winner-b{% elif r.winner == 'debater_a' %}winner-a{% else %}neutral{% endif %}">
+      B: {{ r.score_b }}
     </span>
+    <span class="pill neutral">Novelty: {{ "%.2f"|format(r.novelty_score or 1.0) }}</span>
   </div>
 
-  {% if rnd.key_insight %}
-  <div class="insight-box">💡 {{ rnd.key_insight }}</div>
+  {% if r.key_insight %}
+  <div class="insight-box">💡 {{ r.key_insight }}</div>
   {% endif %}
 
-  {% for arg in rnd.arguments %}
-  <div class="argument {{ arg.speaker | replace('_', '-') }}">
-    <div class="speaker-label">{{ arg.speaker | replace('_', ' ') | title }}</div>
-    {{ arg.content }}
+  {% if r.fact_context %}
+  <div class="fact-box"><div class="box-label">Fact Context</div>{{ r.fact_context }}</div>
+  {% endif %}
+
+  <div class="argument side-a">
+    <div class="speaker">Debater A — {{ sub.stance_a }}</div>
+    {{ r.argument_a }}
   </div>
-  {% endfor %}
+
+  <div class="argument side-b">
+    <div class="speaker">Debater B — {{ sub.stance_b }}</div>
+    {{ r.argument_b }}
+  </div>
+
+  {% if r.bias_flags and r.bias_flags | length > 0 %}
+  <div class="bias-box"><div class="box-label">⚠ Bias Flags</div>{{ r.bias_flags | join(', ') }}</div>
+  {% endif %}
+
+  {% if r.devils_advocate %}
+  <div class="devil-box"><div class="box-label">👿 Devil's Advocate</div>{{ r.devils_advocate }}</div>
+  {% endif %}
+
+  {% if r.rubric_changes %}
+  <div class="insight-box"><div class="box-label">📐 Rubric Update</div>{{ r.rubric_changes }}</div>
+  {% endif %}
+
+  {% if r.summary %}
+  <div class="summary-box"><div class="box-label">Round Summary</div>{{ r.summary }}</div>
+  {% endif %}
+
+  {% if r.audience_reaction %}
+  <div class="audience-box"><div class="box-label">Audience Reaction</div>{{ r.audience_reaction }}</div>
+  {% endif %}
+
+  {% if r.is_repetitive %}
+  <div class="repetitive-box">⚠ This round was flagged as repetitive (novelty below threshold).</div>
+  {% endif %}
 
   {% endfor %}
 
@@ -305,33 +341,112 @@
 </div>
 {% endfor %}
 
-<!-- ══ AGENT EVENTS ══ -->
-{% if agent_events %}
+<!-- ══ SECTION 4: SYSTEM SELF-IMPROVEMENT LOG ══ -->
 <div class="page">
-  <div class="section-title">Agent Events Log</div>
+  <div class="section-title">Section 4</div>
+  <div class="section-heading">System Self-Improvement Log</div>
+
+  {% if improvement_log %}
+    {% for entry in improvement_log %}
+      {% if entry.type == 'rubric_update' %}
+      <div class="log-entry rubric">
+        <div class="log-tag">📐 Rubric Update — Round {{ entry.round_number }}</div>
+        <div>{{ entry.sub_topic }}</div>
+        <div>{{ entry.changes }}</div>
+      </div>
+      {% elif entry.type == 'devils_advocate' %}
+      <div class="log-entry devil">
+        <div class="log-tag">👿 Devil's Advocate — Round {{ entry.round_number }}</div>
+        <div>{{ entry.sub_topic }} &nbsp;|&nbsp; Score gap: A {{ entry.score_a }} vs B {{ entry.score_b }}</div>
+        <div>{{ entry.advice }}</div>
+      </div>
+      {% elif entry.type == 'repetition_detected' %}
+      <div class="log-entry repetition">
+        <div class="log-tag">⚠ Repetition Detected — Round {{ entry.round_number }}</div>
+        <div>{{ entry.sub_topic }} &nbsp;|&nbsp; Novelty score: {{ "%.2f"|format(entry.novelty_score or 1.0) }}</div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  {% else %}
+  <p style="color:#888;font-style:italic;">No system interventions recorded in this debate.</p>
+  {% endif %}
+
+  <div class="footer">DIALECTA — Multi-Agent AI Debate System</div>
+</div>
+
+<!-- ══ SECTION 5: META EVALUATION ══ -->
+<div class="page">
+  <div class="section-title">Section 5</div>
+  <div class="section-heading">Meta-Evaluation</div>
 
   <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Quality Score</td><td>{{ meta_evaluation.quality_score or 'N/A' }}</td></tr>
+    <tr><td>Overall Score A</td><td>{{ meta_evaluation.overall_score_a or 'N/A' }}</td></tr>
+    <tr><td>Overall Score B</td><td>{{ meta_evaluation.overall_score_b or 'N/A' }}</td></tr>
+  </table>
+
+  {% if meta_evaluation.evaluation %}
+  <div class="meta-box">{{ meta_evaluation.evaluation }}</div>
+  {% else %}
+  <p style="color:#888;font-style:italic;">No meta-evaluation text recorded.</p>
+  {% endif %}
+
+  <div class="footer">DIALECTA — Multi-Agent AI Debate System</div>
+</div>
+
+<!-- ══ SECTION 6: FINAL VERDICT ══ -->
+<div class="page">
+  <div class="section-title">Section 6</div>
+  <div class="section-heading">Final Verdict</div>
+
+  <div class="verdict-winner">
+    <div class="vw-label">Overall Winner</div>
+    <div class="vw-name">{{ final_verdict.winner | upper }}</div>
+    <div class="vw-scores">Score A: {{ final_verdict.overall_score_a or 'N/A' }} &nbsp;|&nbsp; Score B: {{ final_verdict.overall_score_b or 'N/A' }}</div>
+  </div>
+
+  <table>
+    <tr><th>Sub-Topic</th><th>Winner</th><th>Score A</th><th>Score B</th></tr>
+    {% for s in final_verdict.sub_debate_results %}
     <tr>
-      <th>Time</th>
-      <th>Agent</th>
-      <th>Event</th>
-      <th>Details</th>
-    </tr>
-    {% for event in agent_events %}
-    <tr class="event-row">
-      <td>{{ event.created_at }}</td>
-      <td>{{ event.agent_name }}</td>
-      <td>
-        <span class="badge {{ event.event_type | lower }}">{{ event.event_type }}</span>
-      </td>
-      <td>{{ event.details | string | truncate(80) }}</td>
+      <td>{{ s.sub_topic }}</td>
+      <td>{{ s.winner }}</td>
+      <td>{{ s.final_score_a }}</td>
+      <td>{{ s.final_score_b }}</td>
     </tr>
     {% endfor %}
   </table>
 
   <div class="footer">DIALECTA — Multi-Agent AI Debate System</div>
 </div>
-{% endif %}
+
+<!-- ══ SECTION 7: TRANSCRIPT APPENDIX ══ -->
+<div class="page">
+  <div class="section-title">Section 7</div>
+  <div class="section-heading">Transcript Appendix</div>
+
+  {% for sub in transcript %}
+  <div class="sub-heading">{{ sub.sub_topic }}</div>
+
+  {% for r in sub.rounds %}
+  <div class="round-heading">Round {{ r.round_number }}</div>
+
+  <div class="transcript-arg t-a">
+    <div class="transcript-label">Debater A</div>
+    {{ r.argument_a }}
+  </div>
+  <div class="transcript-arg t-b">
+    <div class="transcript-label">Debater B</div>
+    {{ r.argument_b }}
+  </div>
+  {% endfor %}
+
+  <hr class="divider" />
+  {% endfor %}
+
+  <div class="footer">DIALECTA — Multi-Agent AI Debate System</div>
+</div>
 
 </body>
 </html>
