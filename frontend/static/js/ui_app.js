@@ -5,6 +5,8 @@ const UIApp = (() => {
   let _currentDebateId = null;
   let _scoreA = 0;
   let _scoreB = 0;
+  let _currentSubIndex = 0;
+  let _totalSubs = 0;
 
   function init() {
     if (_initialized) return;
@@ -84,13 +86,15 @@ const UIApp = (() => {
         break;
 
       case 'sub_debate_started':
+        _currentSubIndex = data.sub_index;
+        _totalSubs = data.total_subs;
         _log(`Sub-debate ${data.sub_index}: ${data.sub_topic}`, 'agent-decomposer');
         _updateProgress(data.sub_index, data.total_subs, 0, 0);
         break;
 
       case 'round_started':
         _log(`Round ${data.round_number} started`, 'agent-orchestrator');
-        _updateProgress(data.sub_index, data.total_subs, data.round_number, data.max_rounds);
+        _updateProgress(_currentSubIndex, _totalSubs, data.round_number, 5);
         break;
 
       case 'agent_thinking':
@@ -286,6 +290,8 @@ const UIApp = (() => {
   function _resetState() {
     _scoreA = 0;
     _scoreB = 0;
+    _currentSubIndex = 0;
+    _totalSubs = 0;
     _currentDebateId = null;
     _updateScoreBar(0, 0);
     document.getElementById('log-entries').innerHTML = '';

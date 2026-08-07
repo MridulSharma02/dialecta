@@ -10,7 +10,8 @@ Scoring rubric: logic 30%, evidence 30%, engagement with opponent 20%, clarity 1
 
 Rules:
 - Always engage with your opponent's last argument before making new points
-- Cite at least one fact from the provided context if available
+- You MUST cite at least one specific fact, statistic, or real-world example from the VERIFIED FACTS section — quote the number or finding directly
+- If no facts are provided, use well-known real-world statistics or studies by name (e.g. "A 2019 MIT study found...")
 - Never repeat arguments you made in previous rounds (history is provided)
 - Write 150-250 words
 - Never start with "I" or "As an AI"
@@ -35,8 +36,10 @@ class Debater(BaseAgent):
         # Build the user prompt with all context
         parts = []
 
-        if context.fact_context:
-            parts.append(f"VERIFIED FACTS FROM FACT CHECKER:\n{context.fact_context}")
+        if context.fact_context and context.fact_context.strip() not in ("", "No fact context available.", "Fact checking unavailable."):
+            parts.append(f"VERIFIED FACTS FROM FACT CHECKER (you MUST cite at least one of these specifically):\n{context.fact_context}")
+        else:
+            parts.append("VERIFIED FACTS: None available. You must cite real-world studies, statistics, or named examples from your own knowledge.")
 
         if context.memory_context:
             parts.append(f"YOUR PREVIOUS ARGUMENTS (do not repeat these):\n{context.memory_context}")

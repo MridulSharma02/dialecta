@@ -119,13 +119,18 @@ class Orchestrator:
         await self.emit("agent_thinking", {"agent": "MetaEvaluator"})
         meta_context = AgentContext(
             debate_id=debate_id, user_id=user_id, topic=topic,
-            sub_topic=topic, round_number=0,
+            sub_topic=topic, round_number=sum(s.get("rounds_run", 0) for s in all_sub_results),
             stance_a="FOR", stance_b="AGAINST",
-            score_history=[{
-                "total_a": overall_score_a / len(sub_topics),
-                "total_b": overall_score_b / len(sub_topics),
-                "winner": "debater_a" if overall_score_a > overall_score_b else "debater_b",
-            }],
+            score_history=[
+                {
+                    "sub_topic": s.get("sub_topic"),
+                    "rounds_run": s.get("rounds_run"),
+                    "winner": s.get("winner"),
+                    "total_a": s.get("final_score_a"),
+                    "total_b": s.get("final_score_b"),
+                }
+                for s in all_sub_results
+            ],
         )
         meta_result = await self.meta_evaluator.run_with_retry(meta_context)
         meta_data = meta_result.data or {}
@@ -399,6 +404,7 @@ class Orchestrator:
 
         # 7. Critic (every 3 rounds)
         new_rubric = None
+        critic_result = None
         if round_num % CRITIC_INTERVAL == 0:
             await self.emit("agent_thinking", {"agent": "Critic"})
             await asyncio.sleep(2)
@@ -407,6 +413,7 @@ class Orchestrator:
                 new_rubric = critic_result.data.get("updated_rubric")
                 await self.emit("rubric_updated", {"changes": critic_result.data.get("changes_made", [])})
 
+        da_data = {}
         # 8. Devil's Advocate (when gap threshold met for consecutive rounds)
         gap = abs(judge_data.get("total_a", 5) - judge_data.get("total_b", 5))
         if gap >= DEVILS_ADVOCATE_GAP and len(score_history) >= DEVILS_ADVOCATE_CONSECUTIVE - 1:
@@ -468,7 +475,7 @@ class Orchestrator:
             "audience_reaction": audience_data.get("reaction", ""),
             "audience_persona": audience_data.get("persona", ""),
             "devils_advocate": da_data.get("advice") if 'da_data' in locals() else None,
-            "rubric_changes": critic_result.data.get("changes_made", []) if new_rubric else None,
+            "rubric_changes": critic_result.data.get("changes_made", []) if (new_rubric and critic_result) else None,
             "novelty_score": memory_data.get("novelty_score", 1.0),
             "is_repetitive": is_repetitive,
             "new_rubric": new_rubric,
