@@ -1,13 +1,6 @@
 <div align="center">
 
-```
-██████╗ ██╗ █████╗ ██╗     ███████╗ ██████╗████████╗ █████╗
-██╔══██╗██║██╔══██╗██║     ██╔════╝██╔════╝╚══██╔══╝██╔══██╗
-██║  ██║██║███████║██║     █████╗  ██║        ██║   ███████║
-██║  ██║██║██╔══██║██║     ██╔══╝  ██║        ██║   ██╔══██║
-██████╔╝██║██║  ██║███████╗███████╗╚██████╗   ██║   ██║  ██║
-╚═════╝ ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝   ╚═╝   ╚═╝  ╚═╝
-```
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=48&duration=3000&pause=1000&color=FF6B6B&center=true&vCenter=true&width=600&height=100&lines=DIALECTA" alt="DIALECTA" />
 
 ### **Multi-Agent AI Debate System**
 *Where thirteen minds argue so you don't have to.*
