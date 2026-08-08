@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=Orbitron&size=52&duration=2000&pause=2000&color=FF6B6B&center=true&vCenter=true&width=700&height=120&lines=%E2%9A%94%EF%B8%8F+DIALECTA" alt="DIALECTA" />
+<img src="https://readme-typing-svg.demolab.com?font=Orbitron&size=52&duration=4000&pause=2000&color=FF6B6B&center=true&vCenter=true&width=700&height=120&lines=%E2%9A%94%EF%B8%8F+DIALECTA" alt="DIALECTA" />
 <br/>
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=16&duration=4000&pause=1000&color=888888&center=true&vCenter=true&width=700&height=40&lines=13+agents.+4+sub-debates.+1+verdict.;Built+from+scratch.+Deployed+to+production.;Where+thirteen+minds+argue+so+you+don%27t+have+to." alt="tagline" />
 <br/><br/>
