@@ -12,6 +12,8 @@ class Settings(BaseSettings):
 
     GROQ_API_KEY: str
     GEMINI_API_KEY: str
+    CLOUDFLARE_API_TOKEN: str = ""
+    CLOUDFLARE_ACCOUNT_ID: str = ""
 
     SUPABASE_URL: str
     SUPABASE_ANON_KEY: str

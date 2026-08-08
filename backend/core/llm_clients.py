@@ -1,11 +1,11 @@
 import logging
+import httpx
 import google.generativeai as genai
 from config import get_settings
 
 settings = get_settings()
 logger = logging.getLogger(__name__)
 
-# Initialise clients once at import time
 from groq import AsyncGroq
 _groq_client = AsyncGroq(api_key=settings.GROQ_API_KEY)
 genai.configure(api_key=settings.GEMINI_API_KEY)
@@ -40,12 +40,45 @@ class GeminiClient:
         return response.text.strip()
 
 
+class CloudflareClient:
+    MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+
+    async def complete(self, system: str, user: str, temperature: float = 0.8) -> str:
+        account_id = settings.CLOUDFLARE_ACCOUNT_ID
+        api_token = settings.CLOUDFLARE_API_TOKEN
+
+        url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{self.MODEL}"
+
+        payload = {
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+            "temperature": temperature,
+            "max_tokens": 1000,
+        }
+
+        async with httpx.AsyncClient(timeout=60) as client:
+            response = await client.post(
+                url,
+                headers={
+                    "Authorization": f"Bearer {api_token}",
+                    "Content-Type": "application/json",
+                },
+                json=payload,
+            )
+            response.raise_for_status()
+            data = response.json()
+            return data["result"]["response"].strip()
+
+
 class FallbackLLMClient:
-    """Tries Groq first. On any failure, automatically falls back to Gemini."""
+    """Tries Groq first. On failure falls back to Gemini. On failure falls back to Cloudflare."""
 
     def __init__(self):
         self.groq = GroqClient()
         self.gemini = GeminiClient()
+        self.cloudflare = CloudflareClient()
 
     async def complete(
         self,
@@ -60,13 +93,23 @@ class FallbackLLMClient:
                 return text, False
             except Exception as e:
                 logger.warning(f"[FallbackLLM] Gemini failed ({e}), falling back to Groq.")
-                text = await self.groq.complete(system, user, temperature)
-                return text, True
+                try:
+                    text = await self.groq.complete(system, user, temperature)
+                    return text, True
+                except Exception as e2:
+                    logger.warning(f"[FallbackLLM] Groq failed ({e2}), falling back to Cloudflare.")
+                    text = await self.cloudflare.complete(system, user, temperature)
+                    return text, True
 
         try:
             text = await self.groq.complete(system, user, temperature)
             return text, False
         except Exception as e:
             logger.warning(f"[FallbackLLM] Groq failed ({e}), switching to Gemini.")
-            text = await self.gemini.complete(system, user, temperature)
-            return text, True
+            try:
+                text = await self.gemini.complete(system, user, temperature)
+                return text, True
+            except Exception as e2:
+                logger.warning(f"[FallbackLLM] Gemini failed ({e2}), falling back to Cloudflare.")
+                text = await self.cloudflare.complete(system, user, temperature)
+                return text, True
